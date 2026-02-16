@@ -27,11 +27,27 @@ function GuestList() {
 
   const addGuestMutation = useMutation({
     mutationFn: async (guest) => await addGuest(guest),
+    onMutate: (responseData) => {
+      query.setQueryData(['guests'], (oldData) =>
+        oldData ? [...oldData, responseData] : [oldData],
+      );
+    },
     onSuccess: () => query.invalidateQueries(['guests']),
   });
 
   const updateGuestMutation = useMutation({
     mutationFn: async (guest) => await updateGuest(guest),
+    onMutate: (responseData) => {
+      query.setQueryData(['guests'], (oldData) => {
+        return oldData.map((guest) => {
+          if (guest.id === responseData.id) {
+            return { ...guest, attending: responseData.attending };
+          }
+
+          return guest;
+        });
+      });
+    },
     onSuccess: () => query.invalidateQueries(['guests']),
   });
 
@@ -56,8 +72,6 @@ function GuestList() {
 
     updateGuestMutation.mutate(updatedGuest);
   }
-
-  console.log(addGuestMutation);
 
   return (
     <div className="guest-wrapper">
