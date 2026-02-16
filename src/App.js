@@ -22,21 +22,21 @@ function GuestList() {
   const query = useQueryClient();
   const { data, isLoading } = useQuery({
     queryKey: ['guests'],
-    queryFn: fetchGuests,
+    queryFn: async () => await fetchGuests(),
   });
 
   const addGuestMutation = useMutation({
-    mutationFn: (guest) => addGuest(guest),
+    mutationFn: async (guest) => await addGuest(guest),
     onSuccess: () => query.invalidateQueries(['guests']),
   });
 
   const updateGuestMutation = useMutation({
-    mutationFn: (guest) => updateGuest(guest),
+    mutationFn: async (guest) => await updateGuest(guest),
     onSuccess: () => query.invalidateQueries(['guests']),
   });
 
   const deleteGuestMutation = useMutation({
-    mutationFn: (id) => deleteGuest(id),
+    mutationFn: async (id) => await deleteGuest(id),
     onSuccess: () => query.invalidateQueries(['guests']),
   });
 
@@ -56,6 +56,8 @@ function GuestList() {
 
     updateGuestMutation.mutate(updatedGuest);
   }
+
+  console.log(addGuestMutation);
 
   return (
     <div className="guest-wrapper">

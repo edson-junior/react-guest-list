@@ -1,29 +1,40 @@
 const baseUrl = 'https://express-guest-list-api-memor.edson-junior.deno.net';
 
-export function fetchGuests() {
-  return fetch(`${baseUrl}/guests`).then((res) => res.json());
+export async function fetchGuests() {
+  const response = await fetch(`${baseUrl}/guests`);
+  const data = await response.json();
+  return data;
 }
 
-export function addGuest(guest) {
-  return fetch(`${baseUrl}/guests`, {
+export async function addGuest(guest) {
+  const response = await fetch(`${baseUrl}/guests`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(guest),
   });
+  const data = await response.json();
+
+  return data;
 }
 
-export function updateGuest({ id, attending }) {
-  return fetch(`${baseUrl}/guests/${id}`, {
+export async function updateGuest({ id, attending }) {
+  const response = await fetch(`${baseUrl}/guests/${id}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({ attending: attending }),
   });
+  const data = await response.json();
+
+  return data;
 }
 
-export function deleteGuest(id) {
-  return fetch(`${baseUrl}/guests/${id}`, { method: 'DELETE' });
+export async function deleteGuest(id) {
+  const response = await fetch(`${baseUrl}/guests/${id}`, { method: 'DELETE' });
+  const data = await response.json();
+
+  return data;
 }
