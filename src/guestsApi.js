@@ -1,4 +1,4 @@
-const baseUrl = 'http://localhost:4000';
+const baseUrl = 'https://express-guest-list-api-memor.edson-junior.deno.net';
 
 export function fetchGuests() {
   return fetch(`${baseUrl}/guests`).then((res) => res.json());
